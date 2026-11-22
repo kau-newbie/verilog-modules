@@ -22,11 +22,11 @@ wire signed [2*(i_n)-1:0] tmp = a*b;
 assign res = $signed(tmp[o_msb:o_lsb]);
 */
 //states
-localparam IDLE = 3'b000, PDCT=3'b001, PDCT2=3'b010, PDSH=3'b011, RESU=3'b100;
+localparam IDLE = 2'b00, PDCT=2'b01, PDSH=2'b10, RESU=2'b11;
 integer i; // 32bits because input i_n is too.
 
-reg [2:0] curr_state;
-reg [2:0] next_state;
+reg [1:0] curr_state;
+reg [1:0] next_state;
 reg en;
 // res and multiplier_ are memories.
 reg signed [o_msb-1:0] res;
