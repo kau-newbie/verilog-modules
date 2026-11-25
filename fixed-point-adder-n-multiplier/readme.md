@@ -14,7 +14,7 @@
 
 아래는 FSM, schema이다.
 
-![Moore Machine FSM](/fixed-point-adder-n-multiplier/images/multiplier_fsm.drawio.png)
+![Moore Machine FSM](/fixed-point-adder-n-multiplier/images/multiplier_fsm.png)
 
 ![schema](/fixed-point-adder-n-multiplier/images/multiplier_schema.drawio.png)
 
