@@ -50,14 +50,21 @@ always @(posedge clk)begin
     else if(curr_state == PDSH) multiplier_ <= multiplier_ >> 1;
 end
 
+// multiplicand_ is 2to1 mux
+wire [(i_n)-1:0]multiplicand_1;
+wire [(i_n)-1:0]multiplicand_2;
+assign multiplicand_1 = multiplier_[0]? multiplicand: 0;
+assign multiplicand_2 = multiplier_[1]? multiplicand: 0;
 // c. res
 always @(posedge clk)begin
     if(~rstb) begin
         res <= 0;
     end
-    else if((curr_state == PDCT) && (multiplier_[0]==1'b1))begin
-        if(i==i_n-1) res <= res - multiplicand; // since MSB of multiplier is −x(w−1) · 2^(w−1).
-        else res <= res + multiplicand; // signed + signed -> signed extending
+    else if(curr_state == PDCT)begin
+        if(i==i_n-2)begin
+            res <= ((res + multiplicand_1) >>> 1) - multiplicand_2; // since MSB of multiplier is −x(w−1) · 2^(w−1).
+        end
+        else res <= res + multiplicand_1; // signed + signed -> signed extending
     end
     else if(curr_state == PDSH) res <= res >>> 1; // arithmetic sh
 end
@@ -83,7 +90,7 @@ always@(*)begin
             en = 1'b0;
         end
         PDCT:begin
-            if(i<i_n-1)begin
+            if(i<i_n-2)begin
                 next_state = PDSH;
             end
             else next_state = RESU;
